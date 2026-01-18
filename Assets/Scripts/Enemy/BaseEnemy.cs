@@ -21,10 +21,9 @@ public abstract class EnemyConfigBase
 }
 
 [Serializable]
-public abstract class EnemySettings<T> : EnemySettings
-    where T : EnemyConfigBase, new()
+public abstract class EnemySettings<TConfig> : EnemySettings where TConfig : EnemyConfigBase, new()
 {
-    [SerializeField] protected T _config = new();
-    public T Config => _config;
+    [SerializeField] protected TConfig _config = new();
+    public TConfig Config => _config;
     public override EnemyConfigBase BaseConfig => _config;
 }
