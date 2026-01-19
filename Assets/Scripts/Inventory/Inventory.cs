@@ -7,18 +7,16 @@ namespace Inventory
 {
     public class Inventory
     {
-        public IReadOnlyList<Slot> Items => _slots;
-        private readonly int startSize;
-
         private List<Slot> _slots;
+        private readonly int _startSize;
         public int CurrentSize => _slots.Sum(cell => cell.Amount);
-
+        public IReadOnlyList<Slot> Items => _slots;
 
         public Inventory(List<(Item, int)> startItems, int maxSize)
         {
-            startSize = maxSize;
+            _startSize = maxSize;
 
-            _slots = new List<Slot>(startSize);
+            _slots = new List<Slot>(_startSize);
 
             for (int i = 0; i < maxSize; i++)
                 _slots.Add(new Slot());
@@ -31,7 +29,7 @@ namespace Inventory
             {
                 Slot slot = _slots[i];
 
-                if (slot.CanAdd(startItems[i].Item1, startItems[i].Item2))
+                if (slot.CanModify(startItems[i].Item1, startItems[i].Item2))
                     slot.AddItem(startItems[i].Item1, startItems[i].Item2);
             }
         }
@@ -39,16 +37,19 @@ namespace Inventory
         public bool CanAddItem(Item item, int amount)
         {
             foreach (var slot in _slots)
-                if (slot.CanAdd(item, amount))
+                if (slot.CanModify(item, amount))
                     return true;
 
             return false;
         }
 
-        public bool AddItem(Item item, int amountToAdd)
+        public int AddItem(Item item, int amountToAdd)
         {
-            if (amountToAdd <= 0 || item == null)
-                return false;
+            if (item == null)
+                throw new ArgumentNullException("Item cannot be null.");
+
+            if (amountToAdd <= 0)
+                throw new ArgumentOutOfRangeException("Item amount cannot be zero or below.");
 
             int remaining = amountToAdd;
 
@@ -80,13 +81,13 @@ namespace Inventory
                 }
             }
 
-            return remaining == 0;
+            return remaining;
         }
 
         public bool RemoveItemsByName(string name, int amountToRemove)
         {
             if (amountToRemove <= 0)
-                return false;
+                throw new ArgumentOutOfRangeException("Item amount cannot be zero or below.");
 
             var slotsWithItem = GetSlotsWithItemByName(name);
             if (slotsWithItem.Count == 0)
@@ -114,7 +115,7 @@ namespace Inventory
             return true;
         }
 
-        public List<Slot> GetSlotsWithItemByName(string name)
+        public IReadOnlyList<Slot> GetSlotsWithItemByName(string name)
         {
             if (_slots == null)
                 throw new InvalidOperationException("Slots List not initialized.");
@@ -130,7 +131,7 @@ namespace Inventory
             return slotsToReturn;
         }
 
-        public List<(Item, int)> GetAllItems()
+        public IReadOnlyList<(Item, int)> GetAllItems()
         {
             List<(Item, int)> items = new();
 
@@ -148,15 +149,15 @@ namespace Inventory
         public Item Item { get; private set; }
         public int Amount { get; private set; }
 
-        public bool CanAdd(Item item, int amount)
+        public bool CanModify(Item item, int amount)
         {
+            if (item == null)
+                throw new ArgumentNullException("Item cannot be null.");
+
             if (amount <= 0)
-                return false;
+                throw new ArgumentOutOfRangeException("Item amount cannot be zero or below.");
 
-            if (Item != null && item != null && Item.Name != item.Name)
-                return false;
-
-            if (Amount + amount > ItemStack)
+            if (Item != null && Item.Name != item.Name)
                 return false;
 
             return true;
@@ -164,11 +165,11 @@ namespace Inventory
 
         public void AddItem(Item item, int amount)
         {
-            if (CanAdd(item, amount) == false)
-                throw new InvalidOperationException("You are trying to add an item to a slot that " +
+            if (CanModify(item, amount) == false)
+                throw new InvalidOperationException("You are trying to modify an item to a slot that " +
                     "cannot add an item of that type or in that quantity.");
 
-            if (Item != null && item != null && Item.Name == item.Name)
+            if (Item != null && Item.Name == item.Name)
             {
                 Amount += amount;
             }
@@ -187,16 +188,13 @@ namespace Inventory
 
         public void RemoveItem(int amount)
         {
-            if (Item == null)
-                throw new ArgumentException("There is no items to remove.");
-
-            if (amount <= 0)
-                throw new ArgumentOutOfRangeException("Amount value cannot be zero or below.");
-
-            if (Amount - amount <= 0)
-                ClearSlot();
-            else
-                Amount -= amount;
+            if (CanModify(Item, amount))
+            {
+                if (Amount - amount <= 0)
+                    ClearSlot();
+                else
+                    Amount -= amount;
+            }
         }
 
         public void ClearSlot()

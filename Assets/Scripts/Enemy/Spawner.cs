@@ -1,28 +1,35 @@
 using System;
 using UnityEngine;
 
-public class Spawner : MonoBehaviour
+public class Spawner
 {
-    [SerializeField] private Ork _orkPrefab;
-    [SerializeField] private Elf _elfPrefab;
-    [SerializeField] private Dragon _dragonPrefab;
+    private Ork _orkPrefab;
+    private Elf _elfPrefab;
+    private Dragon _dragonPrefab;
+
+    public Spawner(Ork orkPrefab, Elf elfPrefab, Dragon dragonPrefab)
+    {
+        _orkPrefab = orkPrefab;
+        _elfPrefab = elfPrefab;
+        _dragonPrefab = dragonPrefab;
+    }
 
     public void Spawn(Vector3 coordinates, EnemySettings enemyConfig)
     {
         switch (enemyConfig)
         {
             case OrkSettings settings:
-                var ork = Instantiate(_orkPrefab, coordinates, Quaternion.identity);
+                var ork = GameObject.Instantiate(_orkPrefab, coordinates, Quaternion.identity);
                 ork.Initialize(settings);
                 break;
 
             case ElfSettings settings:
-                var elf = Instantiate(_elfPrefab, coordinates, Quaternion.identity);
+                var elf = GameObject.Instantiate(_elfPrefab, coordinates, Quaternion.identity);
                 elf.Initialize(settings);
                 break;
 
             case DragonSettings settings:
-                var dragon = Instantiate(_dragonPrefab, coordinates, Quaternion.identity);
+                var dragon = GameObject.Instantiate(_dragonPrefab, coordinates, Quaternion.identity);
                 dragon.Initialize(settings);
                 break;
 

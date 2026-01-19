@@ -31,7 +31,13 @@ namespace Inventory
         {
             if (int.TryParse(_amountField.text, out int value))
             {
-                _inventory.AddItem(new Item(_nameField.text), value);
+                int leftover = _inventory.AddItem(new Item(_nameField.text), value);
+
+                if (leftover > 0)
+                {
+                    Debug.Log($"Some items not fit into inventory: {leftover}");
+                }
+
                 UpdateItemsList();
             }
             else
@@ -55,7 +61,7 @@ namespace Inventory
 
         private void UpdateItemsList()
         {
-            List<(Item, int)> newList = _inventory.GetAllItems();
+            IReadOnlyList<(Item, int)> newList = _inventory.GetAllItems();
 
             string summText = "Items List:";
 

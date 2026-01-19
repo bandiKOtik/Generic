@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Dragon : BaseEnemy
@@ -15,15 +14,5 @@ public class Dragon : BaseEnemy
 
             Debug.Log($"{gameObject.name}: HP: {Health}, DMG: {Damage}, STR: {FireBreath}.");
         }
-    }
-}
-
-[Serializable]
-public class DragonSettings : EnemySettings<DragonSettings.DragonConfig>
-{
-    [Serializable]
-    public class DragonConfig : EnemyConfigBase
-    {
-        [field: SerializeField, Min(0)] public float FireBreath { get; set; }
     }
 }

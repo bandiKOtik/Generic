@@ -132,7 +132,6 @@ GameObject:
   m_Component:
   - component: {fileID: 106972226}
   - component: {fileID: 106972227}
-  - component: {fileID: 106972228}
   - component: {fileID: 106972225}
   - component: {fileID: 106972224}
   - component: {fileID: 106972223}
@@ -242,21 +241,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotateDirection: {x: 0, y: 1, z: 0}
---- !u!114 &106972228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106972222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8552d7c72b0fc8c4fbff67e32dbfb249, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _orkPrefab: {fileID: -4564204020018550055, guid: d4fbd7c6c1ceb2f4b9584693edb69ccb, type: 3}
-  _elfPrefab: {fileID: 6492439495545816712, guid: 6d6001cb87e8a5444baafa06dd19416f, type: 3}
-  _dragonPrefab: {fileID: 9145095007185308939, guid: 3af87f5c767794c4a9133feb9a05b309, type: 3}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,7 +504,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b78a1108b025eb4cb5065043891b639, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawner: {fileID: 106972228}
+  _orkPrefab: {fileID: -4564204020018550055, guid: d4fbd7c6c1ceb2f4b9584693edb69ccb, type: 3}
+  _elfPrefab: {fileID: 6492439495545816712, guid: 6d6001cb87e8a5444baafa06dd19416f, type: 3}
+  _dragonPrefab: {fileID: 9145095007185308939, guid: 3af87f5c767794c4a9133feb9a05b309, type: 3}
   orkSettings:
   - _config:
       <Health>k__BackingField: 1
