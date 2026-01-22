@@ -5,7 +5,7 @@ using UnityEngine;
 public class DragonSettings : EnemySettings<DragonSettings.DragonConfig>
 {
     [Serializable]
-    public class DragonConfig : EnemyConfigBase
+    public class DragonConfig : BaseEnemyConfig
     {
         [field: SerializeField, Min(0)] public float FireBreath { get; set; }
     }

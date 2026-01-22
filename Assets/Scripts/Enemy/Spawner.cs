@@ -14,7 +14,7 @@ public class Spawner
         _dragonPrefab = dragonPrefab;
     }
 
-    public void Spawn(Vector3 coordinates, EnemySettings enemyConfig)
+    public void Spawn(Vector3 coordinates, BaseEnemySettings enemyConfig)
     {
         switch (enemyConfig)
         {
@@ -38,7 +38,7 @@ public class Spawner
         }
     }
 
-    public void SpawnRandom(Vector3 coordinates, EnemySettings[] enemySettingsArray)
+    public void SpawnRandom(Vector3 coordinates, BaseEnemySettings[] enemySettingsArray)
     {
         int randomIndex = UnityEngine.Random.Range(0, enemySettingsArray.Length);
 

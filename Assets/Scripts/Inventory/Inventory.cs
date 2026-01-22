@@ -90,25 +90,34 @@ namespace Inventory
                 throw new ArgumentOutOfRangeException("Item amount cannot be zero or below.");
 
             var slotsWithItem = GetSlotsWithItemByName(name);
-            if (slotsWithItem.Count == 0)
-                return false;
 
-            int remainingToRemove = amountToRemove;
+            if (slotsWithItem.Count == 0)
+            {
+                Debug.LogWarning("No items of this type.");
+                return false;
+            }
+
+            int totalAmount = slotsWithItem.Sum(slot => slot.Amount);
+
+            if (totalAmount < amountToRemove)
+            {
+                Debug.LogWarning("Not enough items to remove.");
+                return false;
+            }
 
             foreach (var slot in slotsWithItem)
             {
-                if (remainingToRemove <= 0)
-                    break;
+                if (amountToRemove == 0) break;
 
-                if (slot.Amount <= remainingToRemove)
+                if (slot.Amount <= amountToRemove)
                 {
-                    remainingToRemove -= slot.Amount;
+                    amountToRemove -= slot.Amount;
                     slot.ClearSlot();
                 }
                 else
                 {
-                    slot.RemoveItem(remainingToRemove);
-                    remainingToRemove = 0;
+                    slot.RemoveItem(amountToRemove);
+                    amountToRemove = 0;
                 }
             }
 

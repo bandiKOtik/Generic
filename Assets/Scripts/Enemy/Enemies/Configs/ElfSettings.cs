@@ -5,7 +5,7 @@ using UnityEngine;
 public class ElfSettings : EnemySettings<ElfSettings.ElfConfig>
 {
     [Serializable]
-    public class ElfConfig : EnemyConfigBase
+    public class ElfConfig : BaseEnemyConfig
     {
         [field: SerializeField, Min(0)] public float Mana { get; set; }
     }
